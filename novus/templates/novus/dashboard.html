@@ -1,0 +1,107 @@
+{% extends "novus/base.html" %}
+{% load static %}
+{% block content %}
+<div style="max-width:1280px;margin:0 auto;padding:44px 28px 0" class="nv-container nv-page-pad">
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:26px">
+<div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;color:#8b53fe;margin-bottom:12px">CONTROL ROOM</div>
+<h1 style="margin:0;font-family:'Chakra Petch',sans-serif;font-size:clamp(30px,4vw,48px);font-weight:700;letter-spacing:-.015em">Admin dashboard</h1>
+</div>
+<a href="{% url 'novus:admin_logout' %}" style="padding:12px 22px;border-radius:99px;border:1px solid rgba(255,255,255,.14);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;color:#c9cfda;cursor:pointer;text-decoration:none">LOG OUT</a>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:14px">
+{% for t in tabs %}
+<a href="?tab={{ t.key }}" style="{{ t.style }};text-decoration:none">{{ t.label }}</a>
+{% endfor %}
+</div>
+
+{% if tab == "events" %}
+<div style="border-radius:20px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;overflow:hidden;margin-bottom:20px">
+<div style="padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid rgba(255,255,255,.07)">
+<h3 style="margin:0;font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:600">Manage events</h3>
+<div style="padding:11px 20px;border-radius:99px;background:#8eff01;color:#07080c;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">+ Add event</div>
+</div>
+<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 90px;gap:12px;padding:14px 26px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6b7280;border-bottom:1px solid rgba(255,255,255,.06)" class="nv-table-head"><span>EVENT</span><span>CATEGORY</span><span>DAY / TIME</span><span>REGISTERED</span><span></span></div>
+{% for ev in all_events %}
+<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 90px;gap:12px;padding:16px 26px;align-items:center;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px" class="nv-table-row">
+<span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:17px">{{ ev.title }}</span>
+<span><span style="{{ ev.chip_style }}">{{ ev.category }}</span></span>
+<span><span class="nv-cell-label">TIME</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8b93a1">{{ ev.time_line }}</span></span>
+<span><span class="nv-cell-label">REGISTERED</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8eff01">{{ ev.reg_line }}</span></span>
+<span style="display:flex;gap:8px;justify-content:flex-end"><span style="cursor:pointer;color:#8b53fe;font-family:'JetBrains Mono',monospace;font-size:11px">EDIT</span><span style="cursor:pointer;color:#ff3b57;font-family:'JetBrains Mono',monospace;font-size:11px">DEL</span></span>
+</div>
+{% endfor %}
+</div>
+<div style="border-radius:20px;border:1px solid rgba(139,83,254,.24);background:rgba(139,83,254,.06);padding:28px;margin-bottom:20px">
+<h3 style="margin:0 0 20px;font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:600">Add / edit event</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+{% for f in event_form_fields %}
+<label style="display:block"><span style="display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6b7280;margin-bottom:8px">{{ f }}</span><input style="width:100%;padding:13px 15px;border-radius:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);color:#e9ecf2;font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none"></label>
+{% endfor %}
+</div>
+<div style="margin-top:22px;padding:14px 28px;display:inline-block;border-radius:99px;background:linear-gradient(100deg,#8eff01,#8b53fe);color:#07080c;font-family:'Chakra Petch',sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Save event</div>
+</div>
+{% endif %}
+
+{% if tab == "registrations" %}
+<div style="border-radius:20px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;overflow:hidden;margin-bottom:20px">
+<div style="padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.07)">
+<h3 style="margin:0;font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:600">Registrations</h3>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+{% for f in reg_filters %}
+<a href="?tab=registrations&regFilter={{ f.label }}" style="{{ f.style }};text-decoration:none">{{ f.label }}</a>
+{% endfor %}
+<div style="padding:10px 18px;border-radius:99px;border:1px solid rgba(142,255,1,.3);background:rgba(142,255,1,.08);color:#8eff01;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;cursor:pointer">↓ EXPORT CSV</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1.2fr 1.4fr 1fr 1.4fr 90px;gap:12px;padding:14px 26px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6b7280;border-bottom:1px solid rgba(255,255,255,.06)" class="nv-table-head"><span>NAME</span><span>EMAIL</span><span>PHONE</span><span>COLLEGE</span><span>EVENTS</span></div>
+{% for r in registrations %}
+<div style="display:grid;grid-template-columns:1.2fr 1.4fr 1fr 1.4fr 90px;gap:12px;padding:16px 26px;align-items:center;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px" class="nv-table-row">
+<span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:17px">{{ r.name }}</span>
+<span><span class="nv-cell-label">EMAIL</span><span style="color:#8b93a1;font-size:13px">{{ r.email }}</span></span>
+<span><span class="nv-cell-label">PHONE</span><span style="color:#8b93a1;font-family:'JetBrains Mono',monospace;font-size:12px">{{ r.phone }}</span></span>
+<span><span class="nv-cell-label">COLLEGE</span><span style="color:#8b93a1;font-size:13px">{{ r.college }}</span></span>
+<span><span class="nv-cell-label">EVENTS</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8eff01">{{ r.events }}</span></span>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+{% if tab == "sponsors" %}
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:20px">
+{% for s in sponsor_cards %}
+<div style="{{ s.style }}">
+<div style="{{ s.plate_style }}"><img src="{% static s.logo %}" alt="{{ s.name }}" style="display:block;width:100%;height:100%;object-fit:contain"></div>
+<div style="font-family:'Chakra Petch',sans-serif;font-size:18px;font-weight:600">{{ s.name }}</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#8eff01;margin-top:6px">{{ s.badge }}</div>
+<div style="display:flex;gap:10px;margin-top:16px"><span style="cursor:pointer;color:#8b53fe;font-family:'JetBrains Mono',monospace;font-size:11px">EDIT</span><span style="cursor:pointer;color:#ff3b57;font-family:'JetBrains Mono',monospace;font-size:11px">REMOVE</span></div>
+</div>
+{% endfor %}
+<div style="border-radius:18px;border:1px dashed rgba(142,255,1,.34);background:rgba(142,255,1,.05);padding:24px;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;color:#8eff01;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;min-height:180px">+ Add sponsor</div>
+</div>
+{% endif %}
+
+{% if tab == "theme" %}
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;padding-bottom:20px">
+<div style="border-radius:20px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:28px">
+<h3 style="margin:0 0 20px;font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:600">Branding</h3>
+<div style="display:grid;gap:16px">
+{% for f in theme_fields %}
+<label style="display:block"><span style="display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6b7280;margin-bottom:8px">{{ f.label }}</span><input value="{{ f.value }}" style="width:100%;padding:13px 15px;border-radius:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);color:#e9ecf2;font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none"></label>
+{% endfor %}
+</div>
+</div>
+<div style="border-radius:20px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:28px">
+<h3 style="margin:0 0 20px;font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:600">Palette</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+<div><div style="height:88px;border-radius:14px;background:#8eff01;box-shadow:0 0 32px rgba(142,255,1,.3)"></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8b93a1;margin-top:9px">#8EFF01 · primary</div></div>
+<div><div style="height:88px;border-radius:14px;background:#8b53fe;box-shadow:0 0 32px rgba(139,83,254,.34)"></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8b93a1;margin-top:9px">#8B53FE · secondary</div></div>
+<div><div style="height:56px;border-radius:14px;background:#1d2331;border:1px solid rgba(255,255,255,.08)"></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8b93a1;margin-top:9px">#1D2331 · surface</div></div>
+<div><div style="height:56px;border-radius:14px;background:#06070b;border:1px solid rgba(255,255,255,.08)"></div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8b93a1;margin-top:9px">#06070B · base</div></div>
+</div>
+<div style="padding:15px 28px;display:inline-block;border-radius:99px;background:#8eff01;color:#07080c;font-family:'Chakra Petch',sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Save theme</div>
+</div>
+</div>
+{% endif %}
+</div>
+{% endblock %}

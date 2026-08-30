@@ -1,0 +1,144 @@
+{% extends "novus/base.html" %}
+{% load static %}
+{% block content %}
+<div style="max-width:1280px;margin:0 auto;padding:52px 28px 0" class="nv-container nv-page-pad">
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;color:#8eff01;margin-bottom:14px">CATALOGUE</div>
+<h1 style="margin:0 0 30px;font-family:'Chakra Petch',sans-serif;font-size:clamp(34px,5vw,60px);font-weight:700;letter-spacing:-.015em">All events</h1>
+
+<form method="get" style="border-radius:20px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:22px;margin-bottom:22px;display:flex;flex-direction:column;gap:18px">
+<input type="hidden" name="cat" value="{{ current_cat }}">
+<input type="hidden" name="sort" value="{{ current_sort }}">
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+<span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8eff01">⌕</span>
+<input name="q" value="{{ query }}" placeholder="Search events…" style="flex:1;background:transparent;border:0;outline:none;color:#e9ecf2;font-family:'Space Grotesk',sans-serif;font-size:15px;padding:13px 0">
+<button type="submit" class="nv-plain-btn" style="width:auto;padding:10px 16px;border-radius:99px;background:#8eff01;color:#07080c;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;cursor:pointer">GO</button>
+</div>
+</form>
+
+<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;margin:-10px 0 18px">
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+{% for c in categories %}
+<a href="?q={{ query }}&cat={{ c.cat }}&sort={{ current_sort }}" style="{{ c.style }};text-decoration:none;display:inline-block">{{ c.label }}</a>
+{% endfor %}
+</div>
+<div style="display:flex;gap:8px;align-items:center">
+<span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#6b7280">SORT</span>
+{% for s in sorts %}
+<a href="?q={{ query }}&cat={{ current_cat }}&sort={{ s.key }}" style="{{ s.style }};text-decoration:none;display:inline-block">{{ s.label }}</a>
+{% endfor %}
+</div>
+</div>
+
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;color:#6b7280;margin-bottom:16px">{{ result_label }}</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;padding-bottom:20px">
+{% for ev in visible_events %}
+<div style="border-radius:22px;overflow:hidden;background:#0c0e14;border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column">
+<a href="?q={{ query }}&cat={{ current_cat }}&sort={{ current_sort }}&full={{ ev.id }}" style="position:relative;display:block;cursor:pointer;background:#0f111a;border-bottom:1px solid rgba(255,255,255,.07)">
+<img src="{% static ev.poster %}" alt="" style="display:block;width:100%;height:300px;object-fit:cover;object-position:center 42%" class="nv-poster-tall">
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,7,11,0) 45%,rgba(6,7,11,.85))"></div>
+<div style="position:absolute;top:14px;left:14px;display:flex;gap:8px;flex-wrap:wrap"><span style="{{ ev.chip_style }}">{{ ev.category }}</span></div>
+<div style="position:absolute;top:14px;right:14px;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+{% if ev.spot %}<span style="padding:5px 10px;border-radius:99px;background:#8b53fe;color:#0b0714;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;font-weight:700">{{ ev.spot_label }}</span>{% endif %}
+{% if ev.is_full %}<span style="padding:5px 10px;border-radius:99px;background:#ff3b57;color:#0b0203;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;font-weight:700">FULL</span>{% endif %}
+</div>
+<div style="position:absolute;bottom:14px;left:16px;right:16px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+<div><div style="font-family:'Chakra Petch',sans-serif;font-size:24px;font-weight:700;line-height:1.1">{{ ev.title }}</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#8eff01;margin-top:5px">{{ ev.subtitle }}</div></div>
+<span style="flex:none;padding:7px 12px;border-radius:99px;background:rgba(6,7,11,.72);border:1px solid rgba(255,255,255,.14);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#c9cfda">FULL VIEW ⤢</span>
+</div>
+</a>
+<div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:14px;flex:1">
+<p style="margin:0;font-size:14px;color:#8b93a1">{{ ev.short }}</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div style="padding:11px 13px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#6b7280">TIME</div><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#e9ecf2;margin-top:4px">{{ ev.time_line }}</div></div>
+<div style="padding:11px 13px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#6b7280">TEAM</div><div style="font-size:13px;color:#e9ecf2;margin-top:4px">{{ ev.team_size }}</div></div>
+<div style="grid-column:span 2;padding:11px 13px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#6b7280">VENUE</div><div style="font-size:13px;color:#e9ecf2;margin-top:4px">{{ ev.venue }}</div></div>
+</div>
+<div style="display:grid;gap:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6b7280">FIRST PRIZE</span><span style="color:#8eff01;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:19px">{{ ev.prize1_label }}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6b7280">SECOND PRIZE</span><span style="color:#b18bff;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px">{{ ev.prize2_label }}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6b7280">REGISTRATION FEE</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#e9ecf2">{{ ev.fee_label }}</span></div>
+</div>
+<div style="margin-top:auto;display:flex;gap:10px;flex-wrap:wrap">
+<a href="?q={{ query }}&cat={{ current_cat }}&sort={{ current_sort }}&full={{ ev.id }}" style="flex:1;min-width:120px;text-align:center;padding:13px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#e9ecf2;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none">Full view</a>
+<a href="{% url 'novus:event_detail' ev.id %}" style="flex:1;min-width:120px;text-align:center;padding:13px;border-radius:99px;background:#8eff01;color:#07080c;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none">Details</a>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+{% if full_event %}
+<div style="position:fixed;inset:0;z-index:90;background:rgba(4,5,8,.9);backdrop-filter:blur(10px);display:flex;align-items:flex-start;justify-content:center;padding:28px 20px" class="nv-overlay-pad">
+<div class="nv-scroll nv-overlay-card" style="width:100%;max-width:1180px;max-height:calc(100vh - 56px);overflow-y:auto;border-radius:26px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,#101320,#08090d);animation:nvfade .2s ease both">
+<div style="position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 28px;background:rgba(10,12,18,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)">
+<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+<span style="{{ full_event.chip_style }}">{{ full_event.category }}</span>
+<div><div style="font-family:'Chakra Petch',sans-serif;font-size:24px;font-weight:700;line-height:1.1">{{ full_event.title }}</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#8eff01;margin-top:4px">{{ full_event.subtitle }}</div></div>
+{% if full_event.spot %}<span style="padding:6px 12px;border-radius:99px;background:#8b53fe;color:#0b0714;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;font-weight:700">{{ full_event.spot_label }}</span>{% endif %}
+</div>
+<a href="?q={{ query }}&cat={{ current_cat }}&sort={{ current_sort }}" style="flex:none;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;color:#c9cfda;cursor:pointer;font-family:'JetBrains Mono',monospace;text-decoration:none">✕</a>
+</div>
+
+<div style="padding:26px 28px 32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start">
+<div style="display:grid;gap:16px">
+<div style="border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:#0f111a"><img src="{% static full_event.poster %}" alt="" style="display:block;width:100%;height:auto"></div>
+<div style="border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:#0f111a"><img src="{% static full_event.rules_img %}" alt="" style="display:block;width:100%;height:auto"></div>
+</div>
+
+<div style="display:grid;gap:18px">
+<div style="border-radius:18px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);padding:22px;display:grid;gap:12px;font-size:14px">
+<div style="display:flex;justify-content:space-between;gap:14px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">DATE</span><span style="text-align:right">{{ full_event.date_line }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">TIME</span><span style="text-align:right">{{ full_event.time_line }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">VENUE</span><span style="text-align:right">{{ full_event.venue }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">TEAM</span><span style="text-align:right">{{ full_event.team_size }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">FIRST PRIZE</span><span style="color:#8eff01;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px">{{ full_event.prize1_label }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">SECOND PRIZE</span><span style="color:#b18bff;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:17px">{{ full_event.prize2_label }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">REG. FEE</span><span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#e9ecf2">{{ full_event.fee_label }}</span></div>
+</div>
+
+<div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;color:#8eff01;margin-bottom:10px">ABOUT</div>
+<p style="margin:0;color:#a3aab7">{{ full_event.description }}</p>
+</div>
+
+<div style="display:grid;gap:14px">
+{% for ph in full_event.phases %}
+<div style="border-radius:16px;border:1px solid rgba(139,83,254,.26);background:rgba(139,83,254,.07);padding:20px">
+<div style="font-family:'Chakra Petch',sans-serif;font-size:17px;font-weight:700;color:#c3a6ff;margin-bottom:12px">{{ ph.name }}</div>
+<div style="display:grid;gap:9px">
+{% for it in ph.items %}
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="margin-top:8px;flex:none;width:5px;height:5px;border-radius:50%;background:#8b53fe"></span><span style="font-size:14px;color:#c2c8d4;text-wrap:pretty">{{ it }}</span></div>
+{% endfor %}
+</div>
+</div>
+{% endfor %}
+</div>
+
+<div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;color:#8eff01;margin-bottom:12px">RULES</div>
+<div style="display:grid;gap:11px">
+{% for r in full_event.rules %}
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="margin-top:8px;flex:none;width:5px;height:5px;border-radius:50%;background:#8eff01"></span><span style="font-size:14px;color:#a3aab7;text-wrap:pretty">{{ r }}</span></div>
+{% endfor %}
+</div>
+</div>
+
+<div style="border-radius:16px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);padding:20px">
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#6b7280;margin-bottom:12px">COORDINATORS</div>
+<div style="font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:600">{{ full_event.coord_name }}</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8eff01;margin-top:5px">{{ full_event.coord_phone }}</div>
+<div style="font-size:13px;color:#8b93a1;margin-top:10px">Faculty coordinator · {{ full_event.faculty }}</div>
+</div>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<a href="{% url 'novus:register' %}" style="flex:1;min-width:150px;text-align:center;padding:16px;border-radius:99px;background:#8eff01;color:#07080c;font-family:'Chakra Petch',sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 34px rgba(142,255,1,.26);text-decoration:none">Register</a>
+<a href="?q={{ query }}&cat={{ current_cat }}&sort={{ current_sort }}" style="flex:1;min-width:150px;text-align:center;padding:16px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#e9ecf2;font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none">Close</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endif %}
+{% endblock %}

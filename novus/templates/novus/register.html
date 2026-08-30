@@ -1,0 +1,71 @@
+{% extends "novus/base.html" %}
+{% load static %}
+{% block content %}
+<div style="max-width:1180px;margin:0 auto;padding:52px 28px 0" class="nv-container nv-page-pad">
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;color:#8eff01;margin-bottom:14px">ENROLMENT</div>
+<h1 style="margin:0 0 8px;font-family:'Chakra Petch',sans-serif;font-size:clamp(34px,5vw,60px);font-weight:700;letter-spacing:-.015em">Register now</h1>
+<p style="margin:0 0 30px;max-width:660px;color:#8b93a1">Each event has its own registration. Three events take online entries through their Google Form; Data Hunt and Lock &amp; Load are spot registration only, at the venue on September 3.</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:26px">
+<div style="border-radius:18px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:22px"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:#6b7280">DATE</div><div style="font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:#8eff01;margin-top:8px">SEP 3, 2026</div></div>
+<div style="border-radius:18px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:22px"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:#6b7280">ONLINE FORMS</div><div style="font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:#b18bff;margin-top:8px">4 EVENTS</div></div>
+<div style="border-radius:18px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:22px"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:#6b7280">SPOT ONLY</div><div style="font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:#8eff01;margin-top:8px">2 EVENTS</div></div>
+<div style="border-radius:18px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:22px"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:#6b7280">REPORTING</div><div style="font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:#b18bff;margin-top:8px">30 MIN EARLY</div></div>
+</div>
+
+<div style="border-radius:18px;border:1px solid rgba(255,176,32,.42);background:rgba(255,176,32,.09);padding:20px 24px;display:flex;gap:16px;align-items:flex-start;margin-bottom:22px">
+<div style="flex:none;width:34px;height:34px;border-radius:50%;background:rgba(255,176,32,.18);border:1px solid rgba(255,176,32,.5);display:flex;align-items:center;justify-content:center;color:#ffc65c;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:17px">!</div>
+<div>
+<div style="font-family:'Chakra Petch',sans-serif;font-size:18px;font-weight:700;color:#ffc65c">Register for one event only</div>
+<div style="font-size:14px;color:#c9b98f;margin-top:5px;text-wrap:pretty">All events run from 10:00 AM on September 3, so they overlap. Choose a single event and submit only that one registration.</div>
+</div>
+</div>
+
+<div style="display:grid;gap:16px;padding-bottom:8px">
+{% for ev in reg_cards %}
+<div style="{{ ev.card_style }}">
+<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+<div style="flex:1;min-width:260px;display:flex;gap:18px;align-items:center">
+<div style="flex:none;width:88px;height:88px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#0f111a"><img src="{% static ev.poster %}" alt="" style="display:block;width:100%;height:100%;object-fit:cover;object-position:center 42%"></div>
+<div>
+<div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+<span style="{{ ev.chip_style }}">{{ ev.category }}</span>
+<span style="{{ ev.mode_style }}">{{ ev.reg_mode_label }}</span>
+</div>
+<div style="font-family:'Chakra Petch',sans-serif;font-size:23px;font-weight:700;line-height:1.15">{{ ev.title }}</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#7d8593;margin-top:6px">{{ ev.time_line }} · {{ ev.venue }}</div>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:22px;align-items:center">
+<div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#6b7280">TEAM</div><div style="font-size:14px;margin-top:4px">{{ ev.team_size }}</div></div>
+<div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#6b7280">FEE</div><div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#e9ecf2;margin-top:4px">{{ ev.fee_label }}</div></div>
+<div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#6b7280">FIRST PRIZE</div><div style="font-family:'Chakra Petch',sans-serif;font-size:19px;font-weight:700;color:#8eff01;margin-top:2px">{{ ev.prize1_label }}</div></div>
+{% if ev.has_form %}
+<a href="{{ ev.form }}" target="_blank" rel="noopener" style="padding:15px 26px;border-radius:99px;background:#8eff01;color:#07080c;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 0 30px rgba(142,255,1,.26);white-space:nowrap;text-decoration:none">Open form ↗</a>
+{% endif %}
+{% if ev.spot %}
+<div style="padding:15px 26px;border-radius:99px;border:1px dashed rgba(139,83,254,.55);background:rgba(139,83,254,.12);color:#c3a6ff;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap">Register at venue</div>
+{% endif %}
+</div>
+</div>
+{% if ev.spot %}
+<div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(139,83,254,.22);font-size:14px;color:#a3aab7;text-wrap:pretty">{{ ev.spot_note }}</div>
+{% endif %}
+</div>
+{% endfor %}
+</div>
+
+<div style="margin-top:26px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:#0a0c12;padding:30px 32px;margin-bottom:8px">
+<h2 style="margin:0 0 18px;font-family:'Chakra Petch',sans-serif;font-size:24px;font-weight:600">Before you register</h2>
+<div style="display:grid;gap:11px">
+{% for n in reg_notes %}
+<div style="display:flex;gap:13px;align-items:flex-start"><span style="margin-top:8px;flex:none;width:5px;height:5px;border-radius:50%;background:#8eff01"></span><span style="color:#a3aab7;text-wrap:pretty">{{ n }}</span></div>
+{% endfor %}
+</div>
+<div style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;gap:26px">
+<div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;color:#6b7280">QUERIES</div><div style="font-size:14px;margin-top:5px">stc.novus@gmail.com</div></div>
+<div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;color:#6b7280">INSTAGRAM</div><div style="font-size:14px;margin-top:5px">@novus__26</div></div>
+</div>
+</div>
+</div>
+{% endblock %}

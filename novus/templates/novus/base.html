@@ -1,0 +1,129 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOVUS 3.0 · TECH FEST 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Chakra+Petch:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#06070b}
+*{box-sizing:border-box}
+img{max-width:100%}
+a{color:#8eff01;text-decoration:none}
+a:hover{color:#a9ff44}
+::selection{background:#8eff01;color:#06070b}
+.nv-scroll::-webkit-scrollbar{width:6px}
+.nv-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
+.nv-scroll::-webkit-scrollbar-thumb{background:rgba(142,255,1,.4);border-radius:99px}
+@keyframes nvfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.nv-plain-link{color:inherit;text-decoration:none;display:block}
+.nv-plain-btn{border:0;background:none;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;text-align:left;display:block;width:100%}
+
+/* Responsive rules — port of the original design's window-width-driven
+   mob (<760px) / narrow (<520px) layout logic to real CSS breakpoints,
+   since Django renders server-side and can't read window.innerWidth.
+   Desktop styles (the inline style="" attributes throughout) are untouched:
+   the header nav below is the same plain horizontal bar as the original. */
+.nv-cell-label{display:none}
+
+/* Mobile hamburger + slide-out drawer menu (CSS-only, no JS) — desktop
+   never sees this; the checkbox/label pair only takes effect under 760px. */
+.nv-menu-toggle{display:none}
+.nv-hamburger{display:none}
+.nv-drawer{position:fixed;top:0;left:0;bottom:0;width:230px;transform:translateX(-100%);transition:transform .25s ease;z-index:100;background:rgba(6,7,11,.97);backdrop-filter:blur(20px);border-right:1px solid rgba(255,255,255,.08);padding:24px 18px;display:none;flex-direction:column;gap:22px;overflow-y:auto}
+.nv-drawer-nav{display:flex;flex-direction:column;gap:6px}
+.nv-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:95}
+.nv-menu-toggle:checked ~ .nv-drawer{transform:translateX(0)}
+.nv-menu-toggle:checked ~ .nv-drawer-overlay{opacity:1;pointer-events:auto}
+
+@media (max-width:760px){
+  .nv-container{padding-left:16px !important;padding-right:16px !important}
+  .nv-header-inner{height:auto !important;min-height:62px;padding:10px 16px !important}
+  .nv-nav{display:none !important}
+  .nv-hamburger{display:flex !important}
+  .nv-drawer{display:flex !important}
+  .nv-hero-pad{padding:44px 30px 38px !important;gap:26px !important}
+  .nv-section-pad{padding-top:26px !important}
+  .nv-page-pad{padding-top:22px !important}
+  .nv-poster-tall{height:220px !important}
+  .nv-overlay-pad{padding:0 !important;align-items:flex-start !important}
+  .nv-overlay-card{border-radius:0 !important;border:0 !important;max-height:100vh !important}
+  .nv-detail-grid{grid-template-columns:1fr !important}
+  .nv-table-head{display:none !important}
+  .nv-table-row{grid-template-columns:1fr !important;gap:6px !important;padding:16px !important}
+  .nv-cell-label{display:block !important;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#6b7280;margin-bottom:3px}
+}
+@media (max-width:520px){
+  .nv-hero-pad{padding:34px 22px 30px !important;gap:22px !important}
+}
+</style>
+</head>
+<body>
+<div style="min-height:100vh;background:#06070b;color:#e9ecf2;font-family:'Space Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.55;position:relative;overflow-x:hidden">
+
+<div style="position:fixed;inset:0;pointer-events:none;background:radial-gradient(60% 40% at 8% -5%,rgba(142,255,1,.10),transparent 70%),radial-gradient(50% 45% at 95% 8%,rgba(139,83,254,.16),transparent 70%),radial-gradient(70% 50% at 50% 105%,rgba(139,83,254,.10),transparent 70%)"></div>
+
+<input type="checkbox" id="nv-menu-toggle" class="nv-menu-toggle">
+
+<label for="nv-menu-toggle" class="nv-drawer-overlay"></label>
+
+<aside class="nv-drawer">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+<a href="{% url 'novus:home' %}" style="display:flex;flex-direction:column;gap:2px;cursor:pointer;text-decoration:none">
+<div style="font-family: Michroma,sans-serif; font-size: 17px; letter-spacing: .2em; background: linear-gradient(180deg,#ffffff 10%,#9ba1af 90%); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800">NOVUS</div>
+</a>
+<label for="nv-menu-toggle" style="cursor:pointer;color:#c9cfda;font-family:'JetBrains Mono',monospace;font-size:16px;padding:4px 8px">✕</label>
+</div>
+<nav class="nv-drawer-nav">
+{% for item in nav %}
+<a href="{% url item.url_name %}" style="{{ item.style }};display:block;width:100%;text-align:left">{{ item.label }}</a>
+{% endfor %}
+{# Admin sign-in is intentionally not linked here — reachable only by visiting /admin-login/ directly. #}
+</nav>
+</aside>
+
+<header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(20px);background:rgba(6,7,11,.78);border-bottom:1px solid rgba(255,255,255,.07)">
+<div style="max-width:1280px;margin:0 auto;padding:0 28px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:28px" class="nv-header-inner">
+<a href="{% url 'novus:home' %}" style="display:flex;align-items:center;gap:11px;cursor:pointer;flex:none;text-decoration:none">
+<div style="font-family: Michroma,sans-serif; font-size: 17px; letter-spacing: .2em; background: linear-gradient(180deg,#ffffff 10%,#9ba1af 90%); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800">NOVUS</div>
+</a>
+<nav style="display:flex;align-items:center;gap:4px" class="nv-nav">
+{% for item in nav %}
+<a href="{% url item.url_name %}" style="{{ item.style }}">{{ item.label }}</a>
+{% endfor %}
+{# Admin sign-in is intentionally not linked here — reachable only by visiting /admin-login/ directly. #}
+</nav>
+<label for="nv-menu-toggle" class="nv-hamburger" style="cursor:pointer;width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.12);align-items:center;justify-content:center;color:#e9ecf2;font-size:16px;flex:none">☰</label>
+</div>
+</header>
+
+<main style="position:relative;z-index:1">
+{% block content %}{% endblock %}
+</main>
+
+<footer style="position:relative;z-index:1;margin-top:56px;border-top:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.015)">
+<div style="max-width:1280px;margin:0 auto;padding:40px 20px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px">
+<div>
+<div style="font-family:Michroma,sans-serif;font-size:16px;letter-spacing:.2em;background:linear-gradient(180deg,#fff,#9ba1af);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px">NOVUS</div>
+<p style="margin:0;font-size:13px;color:#7d8593;max-width:260px">The technical and cultural fest bringing together innovation and creativity.</p>
+</div>
+<div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#6b7280;margin-bottom:14px">QUICK LINKS</div>
+<div style="display:grid;gap:9px">
+{% for item in nav %}
+<a href="{% url item.url_name %}" style="cursor:pointer;font-size:13px;color:#a3aab7">{{ item.label }}</a>
+{% endfor %}
+</div>
+</div>
+<div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#6b7280;margin-bottom:14px">CONTACT</div>
+<div style="display:grid;gap:8px;font-size:13px;color:#a3aab7"><span>stc.novus@gmail.com</span><span>+91 91 88253 061</span><span>@novus__26</span></div>
+</div>
+</div>
+<div style="max-width:1280px;margin:0 auto;padding:0 20px 30px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5f6675">© 2026 NOVUS 3.0 TECH FEST. ALL RIGHTS RESERVED.</div>
+</footer>
+</div>
+</body>
+</html>
