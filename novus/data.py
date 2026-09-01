@@ -84,7 +84,7 @@ EVENTS = [
     },
     {
         "id": 5, "title": "Shadapadeyy", "subtitle": "WPM · Words Per Minute", "category": "Typing",
-        "day": 1, "date": "Sept 3", "start": "11:30", "end": "", "venue": "STC Room No. AC-317",
+        "day": 1, "date": "Sept 3", "start": "10:30", "end": "", "venue": "STC Room No. AC-317",
         "duration": "4 levels · 90s each", "prize": "Keyboard", "prize2": "Mouse", "fee": "₹30",
         "team_size": "Individual entries", "registered": 9, "cap": 20, "spot": False,
         "form": "https://docs.google.com/forms/d/e/1FAIpQLSfg7rVAWt_gu4-1W1gx-OgFzKY4cepcnxEpa87vhgSLOPd8Fw/viewform",
@@ -103,7 +103,7 @@ EVENTS = [
     },
     {
         "id": 6, "title": "Lock & Load", "subtitle": "Mini Militia Tournament", "category": "Gaming",
-        "day": 1, "date": "Sept 3", "start": "11:30", "end": "", "venue": "STC Room No. AC 321",
+        "day": 1, "date": "Sept 3", "start": "10:00", "end": "", "venue": "STC Room No. AC 321",
         "duration": "6 min matches", "prize": "Gift Voucher", "prize2": "", "fee": "₹50",
         "team_size": "4 player team", "registered": 11, "cap": 16, "spot": True, "form": "",
         "poster": "novus/assets/lockload-poster-v2.jpg", "rules_img": "novus/assets/lockload-rules-v2.jpg",
@@ -120,11 +120,7 @@ EVENTS = [
 ]
 
 REGISTRATIONS = [
-    {"name": "Aarav Menon", "email": "aarav@example.com", "phone": "+91 98111 22334", "college": "ABC University", "events": 3},
-    {"name": "Priya Nair", "email": "priya@example.com", "phone": "+91 98222 33445", "college": "NIT Trichy", "events": 2},
-    {"name": "Rahul Verma", "email": "rahul@example.com", "phone": "+91 98333 44556", "college": "VIT Vellore", "events": 1},
-    {"name": "Sneha Iyer", "email": "sneha@example.com", "phone": "+91 98444 55667", "college": "ABC University", "events": 4},
-    {"name": "Karthik Rao", "email": "karthik@example.com", "phone": "+91 98555 66778", "college": "PSG Tech", "events": 2},
+
 ]
 
 CAT_ACCENT = {"Coding": GREEN, "Hunt": PURPLE, "Quiz": GREEN, "Typing": PURPLE, "Gaming": GREEN}

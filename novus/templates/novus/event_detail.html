@@ -58,11 +58,6 @@
 <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">SECOND PRIZE</span><span style="color:#b18bff;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px">{{ current.prize2_label }}</span></div>
 <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em">REG. FEE</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#e9ecf2">{{ current.fee_label }}</span></div>
 </div>
-<div style="border-radius:18px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);padding:22px">
-<div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#6b7280;margin-bottom:10px"><span>CAPACITY</span><span>{{ current.cap_line }}</span></div>
-<div style="height:7px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden"><div style="{{ current.bar_style }}"></div></div>
-<div style="margin-top:10px;font-size:12px;color:#8eff01">{{ current.seats_line }}</div>
-</div>
 <div style="border-radius:18px;border:1px solid rgba(139,83,254,.28);background:rgba(139,83,254,.09);padding:22px">
 <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#b18bff;margin-bottom:10px">COORDINATOR</div>
 <div style="font-family:'Chakra Petch',sans-serif;font-size:17px;font-weight:600">{{ current.coord_name }}</div>
@@ -73,8 +68,7 @@
 </div>
 </div>
 </div>
-<h2 style="margin:44px 0 16px;font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:600">More in {{ current.category }}</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding-bottom:20px">
+
 {% for ev in related %}
 <a class="nv-plain-link" href="{% url 'novus:event_detail' ev.id %}" style="cursor:pointer;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#0c0e14">
 <div style="height:88px;background:repeating-linear-gradient(115deg,#12141d,#12141d 10px,#171a25 10px,#171a25 20px)"></div>
